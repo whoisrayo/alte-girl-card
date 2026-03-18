@@ -4,15 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ALTE GIRL Membership Card Generator</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 body {
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: radial-gradient(circle at top, #3a0066, #120018);
-  color: white;
+  background: #2b003a;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,206 +19,219 @@ body {
 
 .container {
   display: flex;
-  gap: 30px;
+  gap: 20px;
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .form {
-  background: rgba(255,255,255,0.05);
-  padding: 20px;
-  border-radius: 20px;
-  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.08);
+  padding: 18px;
+  border-radius: 16px;
+  color: white;
+  width: 230px;
 }
 
+.form label { font-size: 12px; }
 .form input, .form select {
-  display: block;
-  margin-bottom: 10px;
-  padding: 10px;
-  width: 220px;
-  border-radius: 10px;
+  width: 100%;
+  margin: 5px 0 10px;
+  padding: 8px;
+  border-radius: 8px;
   border: none;
 }
 
 button {
-  padding: 10px 15px;
+  width: 100%;
+  padding: 10px;
   border: none;
-  border-radius: 10px;
-  background: linear-gradient(135deg,#c084fc,#7c3aed);
+  border-radius: 8px;
+  background: #7c3aed;
   color: white;
+  margin-top: 5px;
   cursor: pointer;
 }
 
 .card {
-  width: 360px;
-  height: 620px;
-  border-radius: 25px;
-  background: linear-gradient(145deg, #7c3aed, #2b003a);
-  box-shadow: 0 15px 60px rgba(0,0,0,0.7), inset 0 0 40px rgba(255,255,255,0.15);
-  padding: 20px;
+  width: 430px;
+  height: 250px;
+  background: #f7efe6;
+  border: 8px solid #7a1c2f;
+  border-radius: 20px;
   position: relative;
-  overflow: hidden;
+  padding: 15px;
+  font-family: 'Playfair Display', serif;
 }
 
-.card::after {
-  content: '';
+.inner-border {
   position: absolute;
-  top: 0;
-  left: -50%;
-  width: 200%;
-  height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
-  transform: rotate(25deg);
+  inset: 6px;
+  border: 2px solid #7a1c2f;
+  border-radius: 14px;
 }
 
-.logo {
+.corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #7a1c2f;
+}
+
+.top-left { top: 6px; left: 6px; border-right: none; border-bottom: none; }
+.top-right { top: 6px; right: 6px; border-left: none; border-bottom: none; }
+.bottom-left { bottom: 6px; left: 6px; border-right: none; border-top: none; }
+.bottom-right { bottom: 6px; right: 6px; border-left: none; border-top: none; }
+
+.header {
   text-align: center;
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: 4px;
-  margin-bottom: 10px;
+  color: #7a1c2f;
+  font-size: 20px;
+}
+
+.subheader {
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.content {
+  display: flex;
+  gap: 12px;
 }
 
 .photo {
-  width: 100%;
-  height: 220px;
-  background: #111;
-  border-radius: 15px;
+  width: 120px;
+  height: 140px;
+  border: 3px solid black;
+  border-radius: 10px;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
   overflow: hidden;
 }
 
-.photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.photo img { width: 100%; height: 100%; object-fit: cover; }
 
 .info {
-  margin-top: 15px;
+  flex: 1;
+  font-size: 13px;
 }
 
-.info p {
-  margin: 6px 0;
-  font-size: 14px;
+.label {
+  font-family: 'Great Vibes', cursive;
+  font-size: 16px;
 }
 
-.member {
-  margin-top: 10px;
-  font-size: 12px;
-  opacity: 0.85;
+.line {
+  border-bottom: 1px dotted #7a1c2f;
+  display: inline-block;
+  min-width: 120px;
+}
+
+.footer {
+  position: absolute;
+  bottom: 8px;
+  left: 15px;
+  right: 15px;
+  font-size: 10px;
+  color: #7a1c2f;
 }
 
 .signature {
-  margin-top: 10px;
-  font-size: 13px;
-  font-style: italic;
-  text-align: right;
-}
-
-.qr {
-  margin-top: 10px;
-  display: flex;
-  justify-content: center;
-}
-
-.watermark {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
-  font-size: 50px;
-  opacity: 0.05;
-  transform: rotate(-20deg);
+  bottom: 8px;
+  right: 15px;
+  font-family: 'Great Vibes', cursive;
+  font-size: 18px;
+}
+
+.member {
+  position: absolute;
+  bottom: 28px;
+  right: 15px;
+  font-size: 12px;
 }
 </style>
 </head>
 <body>
 
-<h1>ALTE GIRL Membership Card</h1>
+<h3 style="color:white">ALTE GIRL Card Generator</h3>
 
 <div class="container">
-  <div class="form">
-    <input type="file" id="photoInput" accept="image/*">
-    <input type="text" id="name" placeholder="Name">
-    <input type="text" id="height" placeholder="Height">
-    <input type="text" id="sign" placeholder="Star Sign">
-    <input type="text" id="songLink" placeholder="Song Link (Spotify/Apple)">
 
-    <select id="category">
-      <option>Certified alte girl</option>
-      <option>youngho</option>
-      <option>summer princess</option>
-      <option>midnight muse</option>
-      <option>lil miss body tea</option>
-      <option>just a girl</option>
-    </select>
+<div class="form">
+<label>Upload Photo</label>
+<input type="file" id="photoInput">
 
-    <button onclick="generateCard()">Generate Card</button>
-    <button onclick="downloadCard()">Download</button>
-  </div>
+<label>Name</label>
+<input type="text" id="name">
 
-  <div class="card" id="card">
-    <div class="logo">ALTE GIRL</div>
+<label>Height</label>
+<input type="text" id="height">
 
-    <div class="photo" id="photoPreview"></div>
+<label>Star Sign</label>
+<input type="text" id="sign">
 
-    <div class="info">
-      <p><strong>Name:</strong> <span id="outName"></span></p>
-      <p><strong>Height:</strong> <span id="outHeight"></span></p>
-      <p><strong>Star Sign:</strong> <span id="outSign"></span></p>
-      <p><strong>Category:</strong> <span id="outCategory"></span></p>
-    </div>
+<label>Category</label>
+<select id="category">
+<option>Certified alte girl</option>
+<option>youngho</option>
+<option>summer princess</option>
+<option>midnight muse</option>
+<option>lil miss body tea</option>
+<option>just a girl</option>
+</select>
 
-    <div class="member" id="memberId"></div>
-    <div class="signature">Issued by RAYØ</div>
+<button onclick="generateCard()">Generate</button>
+<button onclick="downloadCard()">Download</button>
+</div>
 
-    <div class="qr" id="qrcode"></div>
+<div class="card" id="card">
+<div class="inner-border"></div>
+<div class="corner top-left"></div>
+<div class="corner top-right"></div>
+<div class="corner bottom-left"></div>
+<div class="corner bottom-right"></div>
 
-    <div class="watermark">ALTE</div>
-  </div>
+<div class="header">Yearners Club</div>
+<div class="subheader">Membership Card</div>
+
+<div class="content">
+<div class="photo" id="photoPreview">Insert Photo</div>
+
+<div class="info">
+<p><span class="label">Name:</span> <span class="line" id="outName"></span></p>
+<p><span class="label">Star Sign:</span> <span class="line" id="outSign"></span></p>
+<p><span class="label">Category:</span> <span class="line" id="outCategory"></span></p>
+<p><span class="label">Height:</span> <span class="line" id="outHeight"></span></p>
+</div>
+</div>
+
+<div class="member" id="memberId"></div>
+<div class="signature">RAYØ</div>
+
+<div class="footer">This certifies the holder as an official ALTE GIRL member.</div>
+</div>
+
 </div>
 
 <script>
-function generateMemberID() {
-  return 'AG-' + Math.floor(1000 + Math.random() * 9000);
-}
+function generateMemberID(){return 'AG-'+Math.floor(1000+Math.random()*9000)}
 
-function generateCard() {
-  const name = document.getElementById('name').value;
-  const height = document.getElementById('height').value;
-  const sign = document.getElementById('sign').value;
-  const category = document.getElementById('category').value;
-  const link = document.getElementById('songLink').value;
+function generateCard(){
+document.getElementById('outName').innerText=document.getElementById('name').value;
+document.getElementById('outHeight').innerText=document.getElementById('height').value;
+document.getElementById('outSign').innerText=document.getElementById('sign').value;
+document.getElementById('outCategory').innerText=document.getElementById('category').value;
 
-  document.getElementById('outName').innerText = name;
-  document.getElementById('outHeight').innerText = height;
-  document.getElementById('outSign').innerText = sign;
-  document.getElementById('outCategory').innerText = category;
-  document.getElementById('memberId').innerText = 'Member No: ' + generateMemberID();
+document.getElementById('memberId').innerText=generateMemberID();
 
-  const qrContainer = document.getElementById('qrcode');
-  qrContainer.innerHTML = '';
-  if(link) {
-    new QRCode(qrContainer, link);
-  }
+const file=document.getElementById('photoInput').files[0];
+if(file){const reader=new FileReader();reader.onload=e=>{document.getElementById('photoPreview').innerHTML=`<img src="${e.target.result}">`};reader.readAsDataURL(file);} }
 
-  const file = document.getElementById('photoInput').files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      document.getElementById('photoPreview').innerHTML = `<img src="${e.target.result}">`;
-    }
-    reader.readAsDataURL(file);
-  }
-}
-
-function downloadCard() {
-  html2canvas(document.getElementById('card')).then(canvas => {
-    const link = document.createElement('a');
-    link.download = 'alte-girl-card.png';
-    link.href = canvas.toDataURL();
-    link.click();
-  });
-}
+function downloadCard(){html2canvas(document.getElementById('card'),{scale:2}).then(canvas=>{const link=document.createElement('a');link.download='alte-card.png';link.href=canvas.toDataURL();link.click();});}
 </script>
 
 </body>
