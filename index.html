@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALTE GIRL Membership Card Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: radial-gradient(circle at top, #3a0066, #120018);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.form {
+  background: rgba(255,255,255,0.05);
+  padding: 20px;
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+}
+
+.form input, .form select {
+  display: block;
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 220px;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg,#c084fc,#7c3aed);
+  color: white;
+  cursor: pointer;
+}
+
+.card {
+  width: 360px;
+  height: 620px;
+  border-radius: 25px;
+  background: linear-gradient(145deg, #7c3aed, #2b003a);
+  box-shadow: 0 15px 60px rgba(0,0,0,0.7), inset 0 0 40px rgba(255,255,255,0.15);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -50%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: rotate(25deg);
+}
+
+.logo {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+}
+
+.photo {
+  width: 100%;
+  height: 220px;
+  background: #111;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info {
+  margin-top: 15px;
+}
+
+.info p {
+  margin: 6px 0;
+  font-size: 14px;
+}
+
+.member {
+  margin-top: 10px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.signature {
+  margin-top: 10px;
+  font-size: 13px;
+  font-style: italic;
+  text-align: right;
+}
+
+.qr {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.watermark {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 50px;
+  opacity: 0.05;
+  transform: rotate(-20deg);
+}
+</style>
+</head>
+<body>
+
+<h1>ALTE GIRL Membership Card</h1>
+
+<div class="container">
+  <div class="form">
+    <input type="file" id="photoInput" accept="image/*">
+    <input type="text" id="name" placeholder="Name">
+    <input type="text" id="height" placeholder="Height">
+    <input type="text" id="sign" placeholder="Star Sign">
+    <input type="text" id="songLink" placeholder="Song Link (Spotify/Apple)">
+
+    <select id="category">
+      <option>Certified alte girl</option>
+      <option>youngho</option>
+      <option>summer princess</option>
+      <option>midnight muse</option>
+      <option>lil miss body tea</option>
+      <option>just a girl</option>
+    </select>
+
+    <button onclick="generateCard()">Generate Card</button>
+    <button onclick="downloadCard()">Download</button>
+  </div>
+
+  <div class="card" id="card">
+    <div class="logo">ALTE GIRL</div>
+
+    <div class="photo" id="photoPreview"></div>
+
+    <div class="info">
+      <p><strong>Name:</strong> <span id="outName"></span></p>
+      <p><strong>Height:</strong> <span id="outHeight"></span></p>
+      <p><strong>Star Sign:</strong> <span id="outSign"></span></p>
+      <p><strong>Category:</strong> <span id="outCategory"></span></p>
+    </div>
+
+    <div class="member" id="memberId"></div>
+    <div class="signature">Issued by RAYØ</div>
+
+    <div class="qr" id="qrcode"></div>
+
+    <div class="watermark">ALTE</div>
+  </div>
+</div>
+
+<script>
+function generateMemberID() {
+  return 'AG-' + Math.floor(1000 + Math.random() * 9000);
+}
+
+function generateCard() {
+  const name = document.getElementById('name').value;
+  const height = document.getElementById('height').value;
+  const sign = document.getElementById('sign').value;
+  const category = document.getElementById('category').value;
+  const link = document.getElementById('songLink').value;
+
+  document.getElementById('outName').innerText = name;
+  document.getElementById('outHeight').innerText = height;
+  document.getElementById('outSign').innerText = sign;
+  document.getElementById('outCategory').innerText = category;
+  document.getElementById('memberId').innerText = 'Member No: ' + generateMemberID();
+
+  const qrContainer = document.getElementById('qrcode');
+  qrContainer.innerHTML = '';
+  if(link) {
+    new QRCode(qrContainer, link);
+  }
+
+  const file = document.getElementById('photoInput').files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('photoPreview').innerHTML = `<img src="${e.target.result}">`;
+    }
+    reader.readAsDataURL(file);
+  }
+}
+
+function downloadCard() {
+  html2canvas(document.getElementById('card')).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'alte-girl-card.png';
+    link.href = canvas.toDataURL();
+    link.click();
+  });
+}
+</script>
+
+</body>
+</html>
