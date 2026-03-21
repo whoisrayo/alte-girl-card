@@ -149,7 +149,7 @@ button {
     <button onclick="generateCard()">Generate</button>
     <button onclick="downloadCard()">Download</button>
   </div>
-  
+
   <div class="card" id="card">
     <div class="header">AG MEMBERSHIP CARD</div>
     <div class="main">
@@ -207,25 +207,37 @@ async function downloadCard() {
       backgroundColor: null
     });
 
-    if(isMobile){
-      const dataUrl = canvas.toDataURL('image/png');
-      const newTab = window.open();
-      if(newTab){
-        newTab.document.write(`
-          <html>
-            <head><title>Save your AG Card</title></head>
-            <body style="margin:0;background:black;display:flex;justify-content:center;align-items:center;height:100vh;">
-              <img src="${dataUrl}" style="max-width:100%;height:auto;" />
-              <p style="position:fixed;bottom:20px;color:white;font-family:sans-serif;text-align:center;width:100%;">
-                Hold image → Save to Photos
-              </p>
-            </body>
-          </html>
-        `);
-      } else {
-        alert('Popup blocked. Please allow popups to save your card.');
+    const dataUrl = canvas.toDataURL('image/png');
+
+    if (isMobile) {
+      try {
+        const newTab = window.open();
+        if (newTab) {
+          newTab.document.write(`
+            <html>
+              <head><title>Save your AG Card</title></head>
+              <body style="margin:0;background:black;display:flex;justify-content:center;align-items:center;height:100vh;">
+                <img src="${dataUrl}" style="max-width:100%;height:auto;" />
+                <p style="position:fixed;bottom:20px;color:white;font-family:sans-serif;text-align:center;width:100%;">
+                  Long press the image → Save to Photos
+                </p>
+              </body>
+            </html>
+          `);
+        } else {
+          // fallback: display image on current page
+          document.body.innerHTML += `
+            <div style="text-align:center;margin-top:20px;">
+              <img src="${dataUrl}" style="max-width:90%;"/>
+              <p style="color:white;font-family:sans-serif;">Long press the image → Save to Photos</p>
+            </div>`;
+        }
+      } catch (e) {
+        alert("Your browser blocked popups. Scroll down to see the image and save it manually.");
+        document.body.innerHTML += `<img src="${dataUrl}" style="max-width:90%;margin-top:20px;">`;
       }
     } else {
+      // Desktop: direct download
       canvas.toBlob(function(blob){
         if(!blob){
           alert('Download failed. Try again.');
@@ -239,6 +251,7 @@ async function downloadCard() {
         document.body.removeChild(link);
       }, 'image/png');
     }
+
   } catch(err){
     console.error(err);
     alert('Something went wrong while downloading. Try Chrome or host the site.');
