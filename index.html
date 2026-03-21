@@ -17,34 +17,40 @@ body {
   align-items: center;
   padding: 20px;
 }
+
 .container {
   display: flex;
   gap: 25px;
   flex-wrap: wrap;
   justify-content: center;
 }
+
 .form {
   background: rgba(255,255,255,0.08);
   padding: 18px;
   width: 240px;
+  border-radius: 0; /* Removed curved edges */
 }
+
 .form input, .form select {
   width: 100%;
   margin: 6px 0 12px;
   padding: 8px;
-  border-radius: 0;
+  border-radius: 0; /* Removed curved edges */
   border: none;
 }
+
 button {
   width: 100%;
   padding: 10px;
   border: none;
-  border-radius: 0;
+  border-radius: 0; /* Removed curved edges */
   background: linear-gradient(135deg,#9333ea,#4c1d95);
   color: white;
   margin-top: 5px;
   cursor: pointer;
 }
+
 .card {
   width: 420px;
   height: 260px;
@@ -53,7 +59,9 @@ button {
   padding: 15px;
   position: relative;
   overflow: hidden;
+  border-radius: 0; /* Removed curved edges */
 }
+
 .card::before {
   content: '';
   position: absolute;
@@ -61,6 +69,7 @@ button {
   background-image: url('https://grainy-gradients.vercel.app/noise.svg');
   opacity: 0.3;
 }
+
 .header {
   text-align: center;
   font-family: 'Orbitron', sans-serif;
@@ -68,11 +77,13 @@ button {
   letter-spacing: 2px;
   color: #d8b4fe;
 }
+
 .main {
   display: flex;
   gap: 15px;
   margin-top: 10px;
 }
+
 .photo {
   width: 140px;
   height: 140px;
@@ -85,11 +96,13 @@ button {
   border: 1px solid #7e22ce;
   box-shadow: 0 0 25px rgba(147,51,234,0.4);
 }
+
 .photo img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .info {
   flex: 1;
   display: flex;
@@ -98,30 +111,29 @@ button {
   gap: 6px;
   font-size: 12px;
 }
+
 .name {
   font-size: 18px;
   font-weight: 600;
   color: #e9d5ff;
 }
+
 .label {
   color: #a855f7;
 }
+
 .member {
   font-size: 10px;
   opacity: 0.8;
   margin-top: 6px;
 }
+
 .signature {
   position: absolute;
   bottom: 10px;
   right: 12px;
   font-size: 12px;
   color: #c084fc;
-}
-#generatedImageContainer img {
-  border: 2px solid #9333ea;
-  margin-top: 10px;
-  max-width: 90%;
 }
 </style>
 </head>
@@ -130,104 +142,88 @@ button {
 <h2>AG Membership Card Generator</h2>
 
 <div class="container">
-  <div class="form">
-    <label>Upload Photo</label>
-    <input type="file" id="photoInput" accept="image/*">
 
-    <label>Name</label>
-    <input type="text" id="name">
+<div class="form">
+<label>Upload Photo</label>
+<input type="file" id="photoInput">
 
-    <label>Height</label>
-    <input type="text" id="height">
+<label>Name</label>
+<input type="text" id="name">
 
-    <label>Star Sign</label>
-    <input type="text" id="sign">
+<label>Height</label>
+<input type="text" id="height">
 
-    <label>Category</label>
-    <select id="category">
-      <option>Certified alte girl</option>
-      <option>youngho</option>
-      <option>summer princess</option>
-      <option>midnight muse</option>
-      <option>lil miss body tea</option>
-      <option>just a girl</option>
-    </select>
+<label>Star Sign</label>
+<input type="text" id="sign">
 
-    <label>Green Flag</label>
-    <input type="text" id="greenFlag" placeholder="e.g. remembers your favorite song">
+<label>Category</label>
+<select id="category">
+<option>Certified alte girl</option>
+<option>youngho</option>
+<option>summer princess</option>
+<option>midnight muse</option>
+<option>lil miss body tea</option>
+<option>just a girl</option>
+</select>
 
-    <button onclick="generateCard()">Generate Card</button>
-    <button onclick="createImage()">Create Image</button>
-    <button id="downloadBtn" style="display:none;">Save Image</button>
-  </div>
+<label>Green Flag</label>
+<input type="text" id="greenFlag" placeholder="e.g. remembers your favorite song">
 
-  <div class="card" id="card">
-    <div class="header">AG MEMBERSHIP CARD</div>
-    <div class="main">
-      <div class="photo" id="photoPreview">Insert Photo</div>
-      <div class="info">
-        <div class="name" id="outName"></div>
-        <div><span class="label">Height:</span> <span id="outHeight"></span></div>
-        <div><span class="label">Star Sign:</span> <span id="outSign"></span></div>
-        <div><span class="label">Category:</span> <span id="outCategory"></span></div>
-        <div><span class="label">Green Flag:</span> <span id="outGreen"></span></div>
-        <div class="member" id="memberId"></div>
-      </div>
-    </div>
-    <div class="signature">RAYØ</div>
+<button onclick="generateCard()">Generate</button>
+<button onclick="downloadCard()">Download</button>
+</div>
+
+<div class="card" id="card">
+<div class="header">AG MEMBERSHIP CARD</div>
+
+<div class="main">
+  <div class="photo" id="photoPreview">Insert Photo</div>
+
+  <div class="info">
+    <div class="name" id="outName"></div>
+    <div><span class="label">Height:</span> <span id="outHeight"></span></div>
+    <div><span class="label">Star Sign:</span> <span id="outSign"></span></div>
+    <div><span class="label">Category:</span> <span id="outCategory"></span></div>
+    <div><span class="label">Green Flag:</span> <span id="outGreen"></span></div>
+    <div class="member" id="memberId"></div>
   </div>
 </div>
 
-<div id="generatedImageContainer"></div>
+<div class="signature">RAYØ x Omoboi x JONATI</div>
+</div>
+
+</div>
 
 <script>
-function generateMemberID() {
-  return 'AG-' + Math.floor(1000 + Math.random() * 9000);
+function generateMemberID(){return 'AG-'+Math.floor(1000+Math.random()*9000)}
+
+function generateCard(){
+document.getElementById('outName').innerText=document.getElementById('name').value;
+document.getElementById('outHeight').innerText=document.getElementById('height').value;
+document.getElementById('outSign').innerText=document.getElementById('sign').value;
+document.getElementById('outCategory').innerText=document.getElementById('category').value;
+document.getElementById('outGreen').innerText=document.getElementById('greenFlag').value;
+
+document.getElementById('memberId').innerText='ID: '+generateMemberID();
+
+const file=document.getElementById('photoInput').files[0];
+const preview=document.getElementById('photoPreview');
+if(file){
+  const reader=new FileReader();
+  reader.onload=e=>{preview.innerHTML=`<img src="${e.target.result}">`};
+  reader.readAsDataURL(file);
+} else {
+  preview.innerText='Insert Photo';
+}
 }
 
-function generateCard() {
-  document.getElementById('outName').innerText = document.getElementById('name').value;
-  document.getElementById('outHeight').innerText = document.getElementById('height').value;
-  document.getElementById('outSign').innerText = document.getElementById('sign').value;
-  document.getElementById('outCategory').innerText = document.getElementById('category').value;
-  document.getElementById('outGreen').innerText = document.getElementById('greenFlag').value;
-  document.getElementById('memberId').innerText = 'ID: ' + generateMemberID();
-
-  const file = document.getElementById('photoInput').files[0];
-  const preview = document.getElementById('photoPreview');
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = e => { preview.innerHTML = `<img src="${e.target.result}">`; };
-    reader.readAsDataURL(file);
-  } else {
-    preview.innerText = 'Insert Photo';
-  }
-}
-
-// Create image and show below card
-async function createImage() {
-  const card = document.getElementById('card');
-  await document.fonts.ready;
-  const canvas = await html2canvas(card, { scale: 3, useCORS: true, allowTaint: true, backgroundColor: null });
-  const dataUrl = canvas.toDataURL('image/png');
-
-  const container = document.getElementById('generatedImageContainer');
-  container.innerHTML = `<p style="color:white;font-family:sans-serif;">${
-    /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
-      ? 'Long press the image below → Save to Photos'
-      : 'Click "Save Image" to download'
-  }</p><img id="generatedImg" src="${dataUrl}">`;
-
-  const downloadBtn = document.getElementById('downloadBtn');
-  downloadBtn.style.display = 'block';
-  downloadBtn.onclick = () => {
-    const link = document.createElement('a');
-    link.href = dataUrl;
-    link.download = 'ag-card.png';
-    document.body.appendChild(link);
+function downloadCard(){
+  html2canvas(document.getElementById('card'),{scale:3}).then(canvas=>{
+    const link=document.createElement('a');
+    link.download='ag-card.png';
+    link.href=canvas.toDataURL();
     link.click();
-    document.body.removeChild(link);
-  };
+  });
 }
 </script>
 
