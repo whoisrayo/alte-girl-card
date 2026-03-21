@@ -83,6 +83,8 @@ function generateCard(){
 async function downloadCard(){
  const card = document.getElementById('card');
 
+ const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
  try {
   await document.fonts.ready;
 
@@ -92,6 +94,47 @@ async function downloadCard(){
     allowTaint: true,
     backgroundColor: null
   });
+
+  if (isMobile) {
+    // MOBILE: open image in new tab for saving
+    const dataUrl = canvas.toDataURL('image/png');
+    const newTab = window.open();
+    if (newTab) {
+      newTab.document.write(`
+        <html>
+          <head><title>Save your AG Card</title></head>
+          <body style="margin:0;background:black;display:flex;justify-content:center;align-items:center;height:100vh;">
+            <img src="${dataUrl}" style="max-width:100%;height:auto;" />
+            <p style="position:fixed;bottom:20px;color:white;font-family:sans-serif;text-align:center;width:100%;">
+              Hold image → Save to Photos
+            </p>
+          </body>
+        </html>
+      `);
+    } else {
+      alert('Popup blocked. Please allow popups to save your card.');
+    }
+  } else {
+    // DESKTOP: direct download
+    canvas.toBlob(function(blob) {
+      if (!blob) {
+        alert('Download failed. Try again.');
+        return;
+      }
+      const link = document.createElement('a');
+      link.download = 'ag-card.png';
+      link.href = URL.createObjectURL(blob);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }, 'image/png');
+  }
+
+ } catch (err) {
+  console.error(err);
+  alert('Something went wrong. Try Chrome or use desktop.');
+ }
+});
 
   canvas.toBlob(function(blob) {
     if (!blob) {
