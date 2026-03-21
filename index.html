@@ -8,249 +8,234 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 body {
-  margin:0;
-  font-family:'Quicksand',sans-serif;
-  background:radial-gradient(circle at top,#2b0a3d,#000);
-  color:white;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:20px;
+  margin: 0;
+  font-family: 'Quicksand', sans-serif;
+  background: radial-gradient(circle at top, #2b0a3d, #000);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
 }
 .container {
-  display:flex;
-  gap:25px;
-  flex-wrap:wrap;
-  justify-content:center;
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .form {
-  background:rgba(255,255,255,0.08);
-  padding:18px;
-  border-radius:12px;
-  width:240px;
+  background: rgba(255,255,255,0.08);
+  padding: 18px;
+  width: 240px;
 }
-.form input,.form select {
-  width:100%;
-  margin:6px 0 12px;
-  padding:8px;
-  border-radius:6px;
-  border:none;
+.form label {
+  font-size: 12px;
+}
+.form input, .form select {
+  width: 100%;
+  margin: 6px 0 12px;
+  padding: 8px;
+  border-radius: 0;
+  border: none;
 }
 button {
-  width:100%;
-  padding:10px;
-  border:none;
-  border-radius:6px;
-  background:linear-gradient(135deg,#9333ea,#4c1d95);
-  color:white;
-  margin-top:5px;
-  cursor:pointer;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 0;
+  background: linear-gradient(135deg,#9333ea,#4c1d95);
+  color: white;
+  margin-top: 5px;
+  cursor: pointer;
 }
 .card {
-  width:420px;
-  height:260px;
-  background:linear-gradient(145deg,#1a0026,#000);
-  box-shadow:0 15px 50px rgba(0,0,0,0.9);
-  padding:15px;
-  position:relative;
-  overflow:hidden;
-  margin-top:20px;
+  width: 420px;
+  height: 260px;
+  background: linear-gradient(145deg, #1a0026, #000);
+  box-shadow: 0 15px 50px rgba(0,0,0,0.9);
+  padding: 15px;
+  position: relative;
+  overflow: hidden;
 }
 .card::before {
-  content:'';
-  position:absolute;
-  inset:0;
-  background-image:url('https://grainy-gradients.vercel.app/noise.svg');
-  opacity:0.3;
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+  opacity: 0.3;
 }
 .header {
-  text-align:center;
-  font-family:'Orbitron';
-  font-size:14px;
-  letter-spacing:2px;
-  color:#d8b4fe;
+  text-align: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #d8b4fe;
 }
 .main {
-  display:flex;
-  gap:15px;
-  margin-top:10px;
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
 }
 .photo {
-  width:140px;
-  height:140px;
-  background:#111;
-  border-radius:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:11px;
-  overflow:hidden;
-  border:1px solid #7e22ce;
-  box-shadow:0 0 25px rgba(147,51,234,0.4);
+  width: 140px;
+  height: 140px;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  overflow: hidden;
+  border: 1px solid #7e22ce;
+  box-shadow: 0 0 25px rgba(147,51,234,0.4);
 }
 .photo img {
-  width:100%;
-  height:100%;
-  object-fit:cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .info {
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  gap:6px;
-  font-size:12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
 }
 .name {
-  font-size:18px;
-  font-weight:600;
-  color:#e9d5ff;
+  font-size: 18px;
+  font-weight: 600;
+  color: #e9d5ff;
 }
 .label {
-  color:#a855f7;
+  color: #a855f7;
 }
 .member {
-  font-size:10px;
-  opacity:0.8;
-  margin-top:6px;
+  font-size: 10px;
+  opacity: 0.8;
+  margin-top: 6px;
 }
 .signature {
-  position:absolute;
-  bottom:10px;
-  right:12px;
-  font-size:12px;
-  color:#c084fc;
+  position: absolute;
+  bottom: 10px;
+  right: 12px;
+  font-size: 12px;
+  color: #c084fc;
 }
 #mobileDownloadContainer img {
-  border:2px solid #9333ea;
-  margin-top:10px;
+  border: 2px solid #9333ea;
+  margin-top: 10px;
 }
 </style>
 </head>
 <body>
-<h2>AG Membership Card Generator</h2>
-<div class="container">
-  <div class="form">
-    <label>Upload Photo</label>
-    <input type="file" id="photoInput" accept="image/*">
-    <label>Name</label>
-    <input type="text" id="name">
-    <label>Height</label>
-    <input type="text" id="height">
-    <label>Star Sign</label>
-    <input type="text" id="sign">
-    <label>Category</label>
-    <select id="category">
-      <option>Certified alte girl</option>
-      <option>youngho</option>
-      <option>summer princess</option>
-      <option>midnight muse</option>
-      <option>lil miss body tea</option>
-      <option>just a girl</option>
-    </select>
-    <label>Green Flag</label>
-    <input type="text" id="greenFlag">
-    <button onclick="generateCard()">Generate</button>
-    <button onclick="downloadCard()">Download</button>
-  </div>
 
-  <div class="card" id="card">
-    <div class="header">AG MEMBERSHIP CARD</div>
-    <div class="main">
-      <div class="photo" id="photoPreview">Insert Photo</div>
-      <div class="info">
-        <div class="name" id="outName"></div>
-        <div><span class="label">Height:</span> <span id="outHeight"></span></div>
-        <div><span class="label">Star Sign:</span> <span id="outSign"></span></div>
-        <div><span class="label">Category:</span> <span id="outCategory"></span></div>
-        <div><span class="label">Green Flag:</span> <span id="outGreen"></span></div>
-        <div class="member" id="memberId"></div>
-      </div>
-    </div>
-    <div class="signature">RAYØ x Omoboi x JONATI</div>
+<h2>AG Membership Card Generator</h2>
+
+<div class="container">
+<div class="form">
+<label>Upload Photo</label>
+<input type="file" id="photoInput" accept="image/*">
+
+<label>Name</label>
+<input type="text" id="name">
+
+<label>Height</label>
+<input type="text" id="height">
+
+<label>Star Sign</label>
+<input type="text" id="sign">
+
+<label>Category</label>
+<select id="category">
+<option>Certified alte girl</option>
+<option>youngho</option>
+<option>summer princess</option>
+<option>midnight muse</option>
+<option>lil miss body tea</option>
+<option>just a girl</option>
+</select>
+
+<label>Green Flag</label>
+<input type="text" id="greenFlag" placeholder="e.g. remembers your favorite song">
+
+<button onclick="generateCard()">Generate</button>
+<button onclick="downloadCard()">Download</button>
+</div>
+
+<div class="card" id="card">
+<div class="header">AG MEMBERSHIP CARD</div>
+<div class="main">
+  <div class="photo" id="photoPreview">Insert Photo</div>
+  <div class="info">
+    <div class="name" id="outName"></div>
+    <div><span class="label">Height:</span> <span id="outHeight"></span></div>
+    <div><span class="label">Star Sign:</span> <span id="outSign"></span></div>
+    <div><span class="label">Category:</span> <span id="outCategory"></span></div>
+    <div><span class="label">Green Flag:</span> <span id="outGreen"></span></div>
+    <div class="member" id="memberId"></div>
   </div>
+</div>
+<div class="signature">RAYØ</div>
+</div>
 </div>
 
 <script>
-function generateMemberID() {
-  return 'AG-' + Math.floor(1000 + Math.random() * 9000);
+function generateMemberID(){return 'AG-'+Math.floor(1000+Math.random()*9000)}
+
+function generateCard(){
+document.getElementById('outName').innerText=document.getElementById('name').value;
+document.getElementById('outHeight').innerText=document.getElementById('height').value;
+document.getElementById('outSign').innerText=document.getElementById('sign').value;
+document.getElementById('outCategory').innerText=document.getElementById('category').value;
+document.getElementById('outGreen').innerText=document.getElementById('greenFlag').value;
+document.getElementById('memberId').innerText='ID: '+generateMemberID();
+
+const file=document.getElementById('photoInput').files[0];
+const preview=document.getElementById('photoPreview');
+if(file){
+  const reader=new FileReader();
+  reader.onload=e=>{
+    preview.innerHTML=`<img src="${e.target.result}">`;
+  };
+  reader.readAsDataURL(file);
+}else{preview.innerText='Insert Photo';}
 }
 
-function generateCard() {
-  document.getElementById('outName').innerText = document.getElementById('name').value;
-  document.getElementById('outHeight').innerText = document.getElementById('height').value;
-  document.getElementById('outSign').innerText = document.getElementById('sign').value;
-  document.getElementById('outCategory').innerText = document.getElementById('category').value;
-  document.getElementById('outGreen').innerText = document.getElementById('greenFlag').value;
-  document.getElementById('memberId').innerText = 'ID: ' + generateMemberID();
+async function downloadCard(){
+const card=document.getElementById('card');
+const isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-  const file = document.getElementById('photoInput').files[0];
-  const preview = document.getElementById('photoPreview');
-  if(file){
-    const reader = new FileReader();
-    reader.onload = e => {
-      preview.innerHTML = `<img src="${e.target.result}">`;
-    };
-    reader.readAsDataURL(file);
-  } else {
-    preview.innerText = 'Insert Photo';
+const canvas=await html2canvas(card,{scale:3,useCORS:true,allowTaint:true,backgroundColor:null});
+
+const dataUrl=canvas.toDataURL('image/png');
+
+if(isMobile){
+  let mobileDiv=document.getElementById('mobileDownloadContainer');
+  if(!mobileDiv){
+    mobileDiv=document.createElement('div');
+    mobileDiv.id='mobileDownloadContainer';
+    mobileDiv.style.textAlign='center';
+    mobileDiv.style.marginTop='20px';
+    document.body.appendChild(mobileDiv);
   }
+  mobileDiv.innerHTML=`
+    <p style="color:white;font-family:sans-serif;">Long press the image below → Save to Photos</p>
+    <img src="${dataUrl}" style="max-width:90%; border:2px solid #9333ea; margin-top:10px;">
+  `;
+  mobileDiv.scrollIntoView({behavior:"smooth"});
+}else{
+  canvas.toBlob(function(blob){
+    if(!blob){alert('Download failed.');return;}
+    const link=document.createElement('a');
+    link.download='ag-card.png';
+    link.href=URL.createObjectURL(blob);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  },'image/png');
 }
-
-async function downloadCard() {
-  const card = document.getElementById('card');
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-  try {
-    await document.fonts.ready;
-
-    const canvas = await html2canvas(card, {
-      scale: 3,
-      useCORS: true,
-      allowTaint: true,
-      backgroundColor: null
-    });
-
-    const dataUrl = canvas.toDataURL('image/png');
-
-    if (isMobile) {
-      // Mobile-safe: show image on page for long-press
-      let mobileDiv = document.getElementById('mobileDownloadContainer');
-      if(!mobileDiv){
-        mobileDiv = document.createElement('div');
-        mobileDiv.id = 'mobileDownloadContainer';
-        mobileDiv.style.textAlign = 'center';
-        mobileDiv.style.marginTop = '20px';
-        document.body.appendChild(mobileDiv);
-      }
-      mobileDiv.innerHTML = `
-        <p style="color:white;font-family:sans-serif;">
-          Long press the image below → Save to Photos
-        </p>
-        <img src="${dataUrl}" style="max-width:90%; border:2px solid #9333ea; margin-top:10px;" />
-      `;
-      mobileDiv.scrollIntoView({behavior: "smooth"});
-    } else {
-      // Desktop: download automatically
-      canvas.toBlob(function(blob){
-        if(!blob){
-          alert('Download failed. Try again.');
-          return;
-        }
-        const link = document.createElement('a');
-        link.download = 'ag-card.png';
-        link.href = URL.createObjectURL(blob);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }, 'image/png');
-    }
-
-  } catch(err){
-    console.error(err);
-    alert('Something went wrong while downloading. Try Chrome or host the site.');
-  }
 }
 </script>
+
 </body>
 </html>
