@@ -32,6 +32,10 @@ body {
   width: 240px;
 }
 
+.form label {
+  font-size: 12px;
+}
+
 .form input, .form select {
   width: 100%;
   margin: 6px 0 12px;
@@ -53,7 +57,7 @@ button {
 
 .card {
   width: 420px;
-  height: 250px;
+  height: 260px;
   border-radius: 20px;
   background: linear-gradient(145deg, #1a0026, #000);
   box-shadow: 0 15px 50px rgba(0,0,0,0.9);
@@ -146,10 +150,19 @@ button {
 <div class="container">
 
 <div class="form">
+<label>Upload Photo</label>
 <input type="file" id="photoInput">
-<input type="text" id="name" placeholder="Name">
-<input type="text" id="height" placeholder="Height">
-<input type="text" id="sign" placeholder="Star Sign">
+
+<label>Name</label>
+<input type="text" id="name">
+
+<label>Height</label>
+<input type="text" id="height">
+
+<label>Star Sign</label>
+<input type="text" id="sign">
+
+<label>Category</label>
 <select id="category">
 <option>Certified alte girl</option>
 <option>youngho</option>
@@ -158,6 +171,10 @@ button {
 <option>lil miss body tea</option>
 <option>just a girl</option>
 </select>
+
+<label>Green Flag</label>
+<input type="text" id="greenFlag" placeholder="e.g. remembers your favorite song">
+
 <button onclick="generateCard()">Generate</button>
 <button onclick="downloadCard()">Download</button>
 </div>
@@ -173,6 +190,7 @@ button {
     <div><span class="label">Height:</span> <span id="outHeight"></span></div>
     <div><span class="label">Star Sign:</span> <span id="outSign"></span></div>
     <div><span class="label">Category:</span> <span id="outCategory"></span></div>
+    <div><span class="label">Green Flag:</span> <span id="outGreen"></span></div>
     <div class="member" id="memberId"></div>
   </div>
 </div>
@@ -190,14 +208,25 @@ document.getElementById('outName').innerText=document.getElementById('name').val
 document.getElementById('outHeight').innerText=document.getElementById('height').value;
 document.getElementById('outSign').innerText=document.getElementById('sign').value;
 document.getElementById('outCategory').innerText=document.getElementById('category').value;
+document.getElementById('outGreen').innerText=document.getElementById('greenFlag').value;
 
 document.getElementById('memberId').innerText='ID: '+generateMemberID();
 
 const file=document.getElementById('photoInput').files[0];
-if(file){const reader=new FileReader();reader.onload=e=>{document.getElementById('photoPreview').innerHTML=`<img src="${e.target.result}">`};reader.readAsDataURL(file);} }
+if(file){
+  const reader=new FileReader();
+  reader.onload=e=>{
+    document.getElementById('photoPreview').innerHTML=`<img src="${e.target.result}">`;
+  };
+  reader.readAsDataURL(file);
+} else {
+  document.getElementById('photoPreview').innerText='Insert Photo';
+}
+}
 
 function downloadCard(){html2canvas(document.getElementById('card'),{scale:2}).then(canvas=>{const link=document.createElement('a');link.download='ag-card.png';link.href=canvas.toDataURL();link.click();});}
 </script>
 
 </body>
 </html>
+
