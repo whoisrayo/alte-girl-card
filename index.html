@@ -81,10 +81,37 @@ function generateCard(){
  if(file){const reader=new FileReader();reader.onload=e=>{preview.innerHTML=`<img src="${e.target.result}">`};reader.readAsDataURL(file);} else {preview.innerText='Insert Photo';}
 }
 async function downloadCard(){
- const card=document.getElementById('card');
- await document.fonts.ready;
- setTimeout(()=>{
-  html2canvas(card,{scale:3,useCORS:true}).then(canvas=>{
+ const card = document.getElementById('card');
+
+ try {
+  await document.fonts.ready;
+
+  const canvas = await html2canvas(card, {
+    scale: 3,
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: null
+  });
+
+  canvas.toBlob(function(blob) {
+    if (!blob) {
+      alert('Download failed. Try again.');
+      return;
+    }
+
+    const link = document.createElement('a');
+    link.download = 'ag-card.png';
+    link.href = URL.createObjectURL(blob);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }, 'image/png');
+
+ } catch (err) {
+  console.error(err);
+  alert('Something went wrong while downloading. Try Chrome or host the site.');
+ }
+}).then(canvas=>{
     const link=document.createElement('a');
     link.download='ag-card.png';
     link.href=canvas.toDataURL('image/png');
@@ -95,5 +122,3 @@ async function downloadCard(){
 </script>
 </body>
 </html>
-
-
