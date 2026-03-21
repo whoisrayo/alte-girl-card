@@ -28,9 +28,6 @@ body {
   padding: 18px;
   width: 240px;
 }
-.form label {
-  font-size: 12px;
-}
 .form input, .form select {
   width: 100%;
   margin: 6px 0 12px;
@@ -124,27 +121,23 @@ button {
 #mobileDownloadContainer img {
   border: 2px solid #9333ea;
   margin-top: 10px;
+  max-width: 90%;
 }
 </style>
 </head>
 <body>
 
 <h2>AG Membership Card Generator</h2>
-
 <div class="container">
 <div class="form">
 <label>Upload Photo</label>
 <input type="file" id="photoInput" accept="image/*">
-
 <label>Name</label>
 <input type="text" id="name">
-
 <label>Height</label>
 <input type="text" id="height">
-
 <label>Star Sign</label>
 <input type="text" id="sign">
-
 <label>Category</label>
 <select id="category">
 <option>Certified alte girl</option>
@@ -154,10 +147,8 @@ button {
 <option>lil miss body tea</option>
 <option>just a girl</option>
 </select>
-
 <label>Green Flag</label>
 <input type="text" id="greenFlag" placeholder="e.g. remembers your favorite song">
-
 <button onclick="generateCard()">Generate</button>
 <button onclick="downloadCard()">Download</button>
 </div>
@@ -183,59 +174,61 @@ button {
 function generateMemberID(){return 'AG-'+Math.floor(1000+Math.random()*9000)}
 
 function generateCard(){
-document.getElementById('outName').innerText=document.getElementById('name').value;
-document.getElementById('outHeight').innerText=document.getElementById('height').value;
-document.getElementById('outSign').innerText=document.getElementById('sign').value;
-document.getElementById('outCategory').innerText=document.getElementById('category').value;
-document.getElementById('outGreen').innerText=document.getElementById('greenFlag').value;
-document.getElementById('memberId').innerText='ID: '+generateMemberID();
-
-const file=document.getElementById('photoInput').files[0];
-const preview=document.getElementById('photoPreview');
-if(file){
-  const reader=new FileReader();
-  reader.onload=e=>{
-    preview.innerHTML=`<img src="${e.target.result}">`;
-  };
-  reader.readAsDataURL(file);
-}else{preview.innerText='Insert Photo';}
+  document.getElementById('outName').innerText=document.getElementById('name').value;
+  document.getElementById('outHeight').innerText=document.getElementById('height').value;
+  document.getElementById('outSign').innerText=document.getElementById('sign').value;
+  document.getElementById('outCategory').innerText=document.getElementById('category').value;
+  document.getElementById('outGreen').innerText=document.getElementById('greenFlag').value;
+  document.getElementById('memberId').innerText='ID: '+generateMemberID();
+  
+  const file=document.getElementById('photoInput').files[0];
+  const preview=document.getElementById('photoPreview');
+  if(file){
+    const reader=new FileReader();
+    reader.onload=e=>{preview.innerHTML=`<img src="${e.target.result}">`};
+    reader.readAsDataURL(file);
+  }else{preview.innerText='Insert Photo';}
 }
 
 async function downloadCard(){
-const card=document.getElementById('card');
-const isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-const canvas=await html2canvas(card,{scale:3,useCORS:true,allowTaint:true,backgroundColor:null});
-
-const dataUrl=canvas.toDataURL('image/png');
-
-if(isMobile){
-  let mobileDiv=document.getElementById('mobileDownloadContainer');
-  if(!mobileDiv){
-    mobileDiv=document.createElement('div');
-    mobileDiv.id='mobileDownloadContainer';
-    mobileDiv.style.textAlign='center';
-    mobileDiv.style.marginTop='20px';
-    document.body.appendChild(mobileDiv);
+  const card=document.getElementById('card');
+  const isMobile=/iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  
+  try{
+    await document.fonts.ready;
+    const canvas=await html2canvas(card,{scale:3,useCORS:true,allowTaint:true,backgroundColor:null});
+    const dataUrl=canvas.toDataURL('image/png');
+    
+    if(isMobile){
+      let mobileDiv=document.getElementById('mobileDownloadContainer');
+      if(!mobileDiv){
+        mobileDiv=document.createElement('div');
+        mobileDiv.id='mobileDownloadContainer';
+        mobileDiv.style.textAlign='center';
+        mobileDiv.style.marginTop='20px';
+        document.body.appendChild(mobileDiv);
+      }
+      mobileDiv.innerHTML=`
+        <p style="color:white;font-family:sans-serif;">Long press the image below → Save to Photos</p>
+        <img src="${dataUrl}">
+      `;
+      mobileDiv.scrollIntoView({behavior:"smooth"});
+    } else {
+      canvas.toBlob(function(blob){
+        if(!blob){alert('Download failed.');return;}
+        const link=document.createElement('a');
+        link.download='ag-card.png';
+        link.href=URL.createObjectURL(blob);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      },'image/png');
+    }
+  } catch(err){
+    console.error(err);
+    alert('Something went wrong. Try Chrome or host the site.');
   }
-  mobileDiv.innerHTML=`
-    <p style="color:white;font-family:sans-serif;">Long press the image below → Save to Photos</p>
-    <img src="${dataUrl}" style="max-width:90%; border:2px solid #9333ea; margin-top:10px;">
-  `;
-  mobileDiv.scrollIntoView({behavior:"smooth"});
-}else{
-  canvas.toBlob(function(blob){
-    if(!blob){alert('Download failed.');return;}
-    const link=document.createElement('a');
-    link.download='ag-card.png';
-    link.href=URL.createObjectURL(blob);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  },'image/png');
-}
 }
 </script>
-
 </body>
 </html>
